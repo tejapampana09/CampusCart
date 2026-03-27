@@ -1,0 +1,5 @@
+{
+  "name": "CampusCart",
+  "description": "A campus-based platform for students to rent, lend, or exchange items within a university campus.",
+  "requestFramePermissions": []
+}

@@ -1,0 +1,89 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "A user of the CampusCart platform.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "The unique ID of the user." },
+        "name": { "type": "string", "description": "The name of the user." },
+        "email": { "type": "string", "description": "The email of the user." },
+        "profilePic": { "type": "string", "description": "The URL of the user's profile picture." },
+        "bio": { "type": "string", "description": "A short bio of the user." },
+        "rating": { "type": "number", "description": "The average rating of the user." },
+        "totalRatings": { "type": "number", "description": "The total number of ratings the user has received." }
+      },
+      "required": ["uid", "name", "email"]
+    },
+    "Item": {
+      "title": "Item",
+      "description": "An item listed for rent, lend, or exchange.",
+      "type": "object",
+      "properties": {
+        "itemId": { "type": "string", "description": "The unique ID of the item." },
+        "ownerId": { "type": "string", "description": "The UID of the user who owns the item." },
+        "ownerName": { "type": "string", "description": "The name of the owner." },
+        "title": { "type": "string", "description": "The title of the item." },
+        "description": { "type": "string", "description": "A detailed description of the item." },
+        "pricePerDay": { "type": "number", "description": "The rental price per day in ₹." },
+        "imageURL": { "type": "string", "description": "The URL of the item's image." },
+        "category": { "type": "string", "description": "The category of the item (e.g., Electronics, Books, Bikes)." },
+        "status": { "type": "string", "enum": ["available", "rented"], "description": "The current availability status of the item." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "The timestamp when the item was listed." }
+      },
+      "required": ["itemId", "ownerId", "title", "pricePerDay", "imageURL", "status"]
+    },
+    "Chat": {
+      "title": "Chat",
+      "description": "A chat session between two users about an item.",
+      "type": "object",
+      "properties": {
+        "chatId": { "type": "string", "description": "The unique ID of the chat." },
+        "participants": { "type": "array", "items": { "type": "string" }, "description": "The UIDs of the two users in the chat." },
+        "itemId": { "type": "string", "description": "The ID of the item the chat is about." },
+        "itemTitle": { "type": "string", "description": "The title of the item." },
+        "itemImage": { "type": "string", "description": "The image URL of the item." },
+        "lastMessage": { "type": "string", "description": "The text of the last message sent." },
+        "lastMessageTimestamp": { "type": "string", "format": "date-time", "description": "The timestamp of the last message." },
+        "typing": { "type": "object", "description": "A map of user UIDs to typing status." }
+      },
+      "required": ["chatId", "participants", "itemId"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "A single message within a chat.",
+      "type": "object",
+      "properties": {
+        "messageId": { "type": "string", "description": "The unique ID of the message." },
+        "senderId": { "type": "string", "description": "The UID of the sender." },
+        "text": { "type": "string", "description": "The text content of the message." },
+        "timestamp": { "type": "string", "format": "date-time", "description": "The timestamp when the message was sent." }
+      },
+      "required": ["messageId", "senderId", "text", "timestamp"]
+    },
+    "Deal": {
+      "title": "Deal",
+      "description": "A structured deal proposed within a chat.",
+      "type": "object",
+      "properties": {
+        "dealId": { "type": "string", "description": "The unique ID of the deal." },
+        "itemId": { "type": "string", "description": "The ID of the item." },
+        "buyerId": { "type": "string", "description": "The UID of the buyer." },
+        "sellerId": { "type": "string", "description": "The UID of the seller." },
+        "price": { "type": "number", "description": "The agreed price." },
+        "duration": { "type": "number", "description": "The duration in days." },
+        "pickupLocation": { "type": "string", "description": "The agreed pickup location." },
+        "status": { "type": "string", "enum": ["pending", "accepted", "completed", "cancelled"], "description": "The current status of the deal." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "The timestamp when the deal was proposed." }
+      },
+      "required": ["dealId", "itemId", "buyerId", "sellerId", "price", "duration", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": { "schema": "User", "description": "User profiles." },
+    "/items/{itemId}": { "schema": "Item", "description": "Items listed for rent or exchange." },
+    "/chats/{chatId}": { "schema": "Chat", "description": "Chat sessions." },
+    "/chats/{chatId}/messages/{messageId}": { "schema": "Message", "description": "Messages within a chat." },
+    "/deals/{dealId}": { "schema": "Deal", "description": "Proposed and completed deals." }
+  }
+}
